@@ -7,7 +7,7 @@ library(tidyverse) # requires tidy 1.0 and dplyr 1.0 for below example
 routes <- read_csv("2020/2020-06-16/slave_routes.csv")
 
 # test plot
-cleaned_routes %>%
+routes %>%
   mutate(decade = 10 * (year_arrival %/% 10)) %>% 
   group_by(decade) %>% 
   summarize(n = sum(n_slaves_arrived, na.rm = TRUE)) %>% 
@@ -63,12 +63,12 @@ us_raw <- raw_pdf[[29]] %>%
   str_split("\n") %>% 
   unlist()
 
+all_years <- seq(1790, 1870, by = 10) %>% 
+  paste0(collapse = "|")
+
 str_subset(us_raw, all_years) %>% 
   str_subset("Table", negate = TRUE) %>% 
   .[c(1:9)]
-
-all_years <- seq(1790, 1870, by = 10) %>% 
-  paste0(collapse = "|")
 
 us_raw[str_detect(us_raw, all_years)] %>% 
   .[2:10]
